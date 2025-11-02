@@ -1,0 +1,23 @@
+- name: Configure Apache Web Server
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Deploy sample index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: "<h1>Welcome to Ryan's Test Website server created with Terraform + Ansible!</h1>"
+
+    - name: Ensure Apache is running
+      service:
+        name: apache2
+        state: started
+        enabled: yes
